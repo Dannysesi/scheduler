@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h1>Timetable</h1>
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr class="table-secondary"> <th>Day / Time</th>
+        {% for hour in hours %}
+          <th>{{ hour }}:00 - {{ hour|add:1 }}:00</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for day in days %}
+        <tr>
+          <td><strong>{{ day }}</strong></td>
+          {% for hour in hours %}
+            <td>
+              {% if day == "Monday" and hour == 9 %}
+                Assembly
+              {% else %}
+                {% for entry in timetable %}
+                  {% if entry.day == day and entry.time.hour == hour %}
+                    {{ entry.course.name }} ({{ entry.course.instructor }})<br>
+                    {{ entry.classroom.name }}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
